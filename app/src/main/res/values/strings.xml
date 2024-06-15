@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DrawingApp</string>
+    <string name="x">X</string>
+    <string name="save_painting">Save painting</string>
+    <string name="show_saved">Show saved painting</string>
+    <string name="failed_to_save_drawing">Failed to save drawing</string>
+    <string name="drawing_saved">Drawing saved</string>
+    <string name="photo_deleted">Photo deleted</string>
+</resources>
