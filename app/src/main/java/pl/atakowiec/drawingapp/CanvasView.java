@@ -10,7 +10,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,8 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Date;
 
 public class CanvasView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
     private final Object LOCK = new Object();
@@ -174,13 +171,13 @@ public class CanvasView extends SurfaceView implements SurfaceHolder.Callback, R
         bitmapCanvas.drawColor(Color.WHITE);
     }
 
-    public void saveBitmap(MainActivity mainActivity) {
+    public void saveBitmap(MainActivity mainActivity, String name) {
         File directory = new File(mainActivity.getFilesDir(), "drawings");
         if (!directory.exists()) {
             directory.mkdirs();
         }
-        String datePretty = DateFormat.getDateTimeInstance().format(new Date());
-        File file = new File(directory, "drawing-" + datePretty + ".png");
+
+        File file = new File(directory, name + ".png");
         try {
             file.createNewFile();
         } catch (IOException e) {
