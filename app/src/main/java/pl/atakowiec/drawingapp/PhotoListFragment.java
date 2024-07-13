@@ -19,8 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class PhotoListFragment extends Fragment implements PhotoAdapter.OnPhotoClickListener {
+public class PhotoListFragment extends Fragment implements Consumer<Photo> {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class PhotoListFragment extends Fragment implements PhotoAdapter.OnPhotoC
     }
 
     @Override
-    public void onPhotoClick(Photo photo) {
+    public void accept(Photo photo) {
         PhotoDetailFragment detailFragment = PhotoDetailFragment.newInstance(photo);
 
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();

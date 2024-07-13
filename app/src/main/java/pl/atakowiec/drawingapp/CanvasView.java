@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class CanvasView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
+    private final static String DRAWING_DIRECTORY = "drawings";
     private final Object LOCK = new Object();
     private final SurfaceHolder surfaceHolder;
     private final Paint paint;
@@ -31,7 +33,6 @@ public class CanvasView extends SurfaceView implements SurfaceHolder.Callback, R
     private Point previousPoint = null;
     private Bitmap bitmap;
     private Canvas bitmapCanvas;
-
     private Bitmap loadedBitmap = null;
 
     public CanvasView(Context context, AttributeSet attrs) {
@@ -142,7 +143,8 @@ public class CanvasView extends SurfaceView implements SurfaceHolder.Callback, R
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
-        bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        int size = Math.max(getWidth(), getHeight());
+        bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
         bitmapCanvas = new Canvas(bitmap);
         bitmapCanvas.drawColor(Color.WHITE);
 
@@ -171,13 +173,21 @@ public class CanvasView extends SurfaceView implements SurfaceHolder.Callback, R
         bitmapCanvas.drawColor(Color.WHITE);
     }
 
-    public void saveBitmap(MainActivity mainActivity, String name) {
-        File directory = new File(mainActivity.getFilesDir(), "drawings");
+    public void saveBitmap(MainActivity mainActivity, String name, boolean force) {
+        File directory = new File(mainActivity.getFilesDir(), DRAWING_DIRECTORY);
+
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
         File file = new File(directory, name + ".png");
+        if(file.exists() && !force) {
+            mainActivity.showConfirmationPopup(name);
+            return;
+        }
+
+        mainActivity.setEnteredDrawingName("");
+
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -186,8 +196,8 @@ public class CanvasView extends SurfaceView implements SurfaceHolder.Callback, R
             return;
         }
 
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             Toast.makeText(mainActivity, mainActivity.getString(R.string.drawing_saved), Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();

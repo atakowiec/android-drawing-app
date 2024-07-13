@@ -2,11 +2,14 @@
     <string name="app_name">DrawingApp</string>
     <string name="x">X</string>
     <string name="save_painting">Save painting</string>
-    <string name="show_saved">Show saved painting</string>
+    <string name="show_saved">Show saved paintings</string>
     <string name="failed_to_save_drawing">Failed to save drawing</string>
     <string name="drawing_saved">Drawing saved</string>
     <string name="photo_deleted">Photo deleted</string>
     <string name="insert_name_text">Enter drawing name</string>
     <string name="save_btn">Save</string>
     <string name="insert_name_hint">name…</string>
+    <string name="confirm_override">Confirm</string>
+    <string name="confirm_override_text">File already exists. Override?</string>
+    <string name="empty_name_error">Please enter a name</string>
 </resources>

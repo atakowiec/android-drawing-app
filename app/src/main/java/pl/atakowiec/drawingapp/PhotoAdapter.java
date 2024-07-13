@@ -13,16 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
     private final List<Photo> photoList;
-    private final OnPhotoClickListener listener;
+    private final Consumer<Photo> listener;
 
-    public interface OnPhotoClickListener {
-        void onPhotoClick(Photo photo);
-    }
-
-    public PhotoAdapter(List<Photo> photoList, OnPhotoClickListener listener) {
+    public PhotoAdapter(List<Photo> photoList, Consumer<Photo> listener) {
         this.photoList = photoList;
         this.listener = listener;
     }
@@ -46,7 +43,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         }
 
         holder.textView.setText(photoFile.getName().split("\\.")[0].replace("-", " "));
-        holder.itemView.setOnClickListener(v -> listener.onPhotoClick(photo));
+        holder.itemView.setOnClickListener(v -> listener.accept(photo));
     }
 
     @Override
